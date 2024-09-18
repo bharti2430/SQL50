@@ -51,4 +51,21 @@ on s.student_id=e.student_id and sub.subject_name=e.subject_name
 group by sub.subject_name,s.student_id
 order by s.student_id,sub.subject_name;
 
-Q13) 
+-- Q13) find managers with at least five direct reports.
+select e1.name from employee e1 join employee e2
+on e1.id=e2.managerId
+group by e2.managerId
+having count(e2.managerId)>=5;
+
+-- Q14) find the confirmation rate of each user.
+SELECT 
+    s.user_id,
+    ROUND(
+        IFNULL(SUM(CASE WHEN c.action = 'confirmed' THEN 1 ELSE 0 END) / COUNT(c.action), 0), 2
+    ) AS confirmation_rate
+FROM 
+    Signups s
+LEFT JOIN 
+    Confirmations c ON s.user_id = c.user_id
+GROUP BY 
+    s.user_id;
